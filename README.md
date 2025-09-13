@@ -1,4 +1,4 @@
-# MERN Mini CRM (Complete ZIP)
+# MERN Mini CRM 
 
 This archive contains a complete MERN mini-CRM project (backend + frontend) with:
 - JWT auth (register/login)
