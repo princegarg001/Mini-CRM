@@ -1,8 +1,12 @@
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Register() {
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm();
   const navigate = useNavigate();
 
   const API_URL = import.meta.env.VITE_API_URL;
@@ -15,13 +19,7 @@ export default function Register() {
         body: JSON.stringify(data),
       });
 
-      let json = {};
-      try {
-        json = await res.json();
-      } catch (e) {
-        // If not JSON, fallback
-        json = { message: "Unknown error" };
-      }
+      const json = await res.json().catch(() => ({ message: "Unknown error" }));
 
       if (res.ok) {
         alert("Registered! Please login.");
@@ -36,34 +34,73 @@ export default function Register() {
   };
 
   return (
-    <div className="auth">
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input
-          placeholder="Name"
-          {...register("name", { required: "Name is required" })}
+    <div className="crm-register-bg">
+      <div className="crm-register-card">
+        <img
+          src="/images/OIP (1).jpeg"
+          alt="Logo"
+          className="crm-register-logo"
         />
-        {errors.name && <span style={{ color: 'red' }}>{errors.name.message}</span>}
-        <input
-          type="email"
-          placeholder="Email"
-          {...register("email", { required: "Email is required" })}
-        />
-        {errors.email && <span style={{ color: 'red' }}>{errors.email.message}</span>}
-        <input
-          type="password"
-          placeholder="Password"
-          {...register("password", { required: "Password is required" })}
-        />
-        {errors.password && <span style={{ color: 'red' }}>{errors.password.message}</span>}
-        <select defaultValue="" {...register("role", { required: "Role is required" })}>
-          <option value="" disabled>Select role</option>
-          <option value="user">User</option>
-          <option value="admin">Admin</option>
-        </select>
-        {errors.role && <span style={{ color: 'red' }}>{errors.role.message}</span>}
-        <button type="submit" disabled={isSubmitting}>Register</button>
-      </form>
+        <h2 className="crm-register-title">Create your Mini CRM account</h2>
+        <p className="crm-register-sub">Manage your customers and leads in one place.</p>
+        <form onSubmit={handleSubmit(onSubmit)} className="crm-register-form">
+          <label htmlFor="name">Name</label>
+          <input
+            id="name"
+            placeholder="Enter your name"
+            {...register("name", { required: "Name is required" })}
+            className={errors.name ? "crm-register-input error" : "crm-register-input"}
+          />
+          {errors.name && <span className="crm-register-error">{errors.name.message}</span>}
+
+          <label htmlFor="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            placeholder="Enter your email"
+            {...register("email", { required: "Email is required" })}
+            className={errors.email ? "crm-register-input error" : "crm-register-input"}
+          />
+          {errors.email && <span className="crm-register-error">{errors.email.message}</span>}
+
+          <label htmlFor="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            placeholder="Enter your password"
+            {...register("password", { required: "Password is required" })}
+            className={errors.password ? "crm-register-input error" : "crm-register-input"}
+          />
+          {errors.password && <span className="crm-register-error">{errors.password.message}</span>}
+
+          <label htmlFor="role">Role</label>
+          <select
+            id="role"
+            defaultValue=""
+            {...register("role", { required: "Role is required" })}
+            className={errors.role ? "crm-register-input error" : "crm-register-input"}
+          >
+            <option value="" disabled>
+              Select role
+            </option>
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+          </select>
+          {errors.role && <span className="crm-register-error">{errors.role.message}</span>}
+
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="crm-register-btn"
+          >
+            {isSubmitting ? "Registering..." : "Register"}
+          </button>
+        </form>
+        <p className="crm-register-login-link">
+          Already have an account?{' '}
+          <Link to="/login">Login</Link>
+        </p>
+      </div>
     </div>
   );
 }

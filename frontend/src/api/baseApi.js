@@ -12,5 +12,11 @@ const baseQuery = fetchBaseQuery({
 export const baseApi = createApi({
   reducerPath: 'api',
   baseQuery,
-  endpoints: () => ({})
+  endpoints: (builder) => ({
+    getLeadStats: builder.query({
+      query: () => '/reports/leads-by-status'
+    })
+  })
 });
+
+export const { useGetLeadStatsQuery } = baseApi;

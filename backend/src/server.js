@@ -22,7 +22,7 @@ app.get('/', (req, res) => res.json({ ok: true }));
 // routes
 app.use('/api/auth', authRoutes);
 app.use('/api/customers', customerRoutes);
-app.use('/api/leads', leadRoutes);
+app.use('/api/customers/:customerId/leads', leadRoutes);
 
 // simple reporting endpoint
 app.get('/api/reports/leads-by-status', Report.leadsByStatus);
